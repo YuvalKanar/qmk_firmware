@@ -2,6 +2,14 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "quantum.h"
 
+#ifdef LUNA_ENABLE
+#include "luna.h"
+#endif
+
+#ifdef OCEAN_DREAM_ENABLE
+#include "ocean_dream.h"
+#endif
+
 #ifdef SWAP_HANDS_ENABLE
 
 __attribute__ ((weak))
@@ -52,9 +60,10 @@ oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
     if (is_keyboard_master()) {
         return OLED_ROTATION_270;
     }
-    return rotation;
+    return OLED_ROTATION_270;
 }
 
+#ifndef OCEAN_DREAM_ENABLE
 static void render_logo(void) {
     static const char PROGMEM qmk_logo[] = {
         0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,0x90,0x91,0x92,0x93,0x94,
@@ -63,26 +72,26 @@ static void render_logo(void) {
     };
     oled_write_P(qmk_logo, false);
 }
+#endif
 
 void print_status_narrow(void) {
-    oled_write_P(PSTR("\n\n"), false);
+    oled_write_P(PSTR("\n\n "), false);
     switch (get_highest_layer(layer_state)) {
         case 0:
-            oled_write_ln_P(PSTR("Qwrt"), false);
+            oled_write_P(PSTR("Qwrt"), false);
             break;
         case 1:
-            oled_write_ln_P(PSTR("Clmk"), false);
+            oled_write_P(PSTR("Game"), false);
             break;
         default:
             oled_write_P(PSTR("Mod\n"), false);
             break;
     }
     oled_write_P(PSTR("\n\n"), false);
-    oled_write_ln_P(PSTR("LAYER"), false);
     switch (get_highest_layer(layer_state)) {
         case 0:
         case 1:
-            oled_write_P(PSTR("Base\n"), false);
+            oled_write_P(PSTR(" Base"), false);
             break;
         case 2:
             oled_write_P(PSTR("Lower"), false);
@@ -90,15 +99,16 @@ void print_status_narrow(void) {
         case 3:
             oled_write_P(PSTR("Raise"), false);
             break;
-        case 4:
-            oled_write_P(PSTR("Adjust"), false);
-            break;
         default:
             oled_write_ln_P(PSTR("Undef"), false);
     }
     oled_write_P(PSTR("\n\n"), false);
-    led_t led_usb_state = host_keyboard_led_state();
-    oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
+
+    static char wpm_str[4];
+
+    sprintf(wpm_str, "%03d", get_current_wpm());
+    oled_write_P(PSTR(" WPM\n "), false);
+    oled_write(wpm_str, false);
 }
 
 bool oled_task_kb(void) {
@@ -107,8 +117,15 @@ bool oled_task_kb(void) {
     }
     if (is_keyboard_master()) {
         print_status_narrow();
+#ifdef LUNA_ENABLE
+        render_luna(0, 13);
+#endif
     } else {
+#ifdef OCEAN_DREAM_ENABLE
+        render_stars();
+#else
         render_logo();
+#endif
     }
     return true;
 }
