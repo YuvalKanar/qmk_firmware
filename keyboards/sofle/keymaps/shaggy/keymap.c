@@ -89,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
  * | ____ |   !  |   @  |   #  |   $  |   %  |-------.               ,-------|   ^  |   &  |   *  |   (  |   )  |   ]  |
  * |------+------+------+------+------+------| ____  |               | ____  |------+------+------+------+------+------|
- * | ____ |      |      |      |   _  |   {  |-------|               |-------|   }  |   +  |      |      |      | ____ |
+ * | ____ |      |      |   _  |   {  |      |-------|               |-------|      |   }  |   +  |      |      | ____ |
  * `-------------+------+------+------+------|       |               |       |------+------+------+------+-------------'
  *               | ____ | ____ | ____ | ____ | ____  |               | ____  | ____ | ____ | ____ | ____ |
  *               `-----------------------------------'               '-----------------------------------'
@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,                    XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,KC_MINS,KC_EQL ,
     _______,KC_1   ,KC_2   ,KC_3   ,KC_4   ,KC_5   ,                    KC_6   ,KC_7   ,KC_8   ,KC_9   ,KC_0   ,KC_LBRC,
     _______,KC_EXLM,KC_AT  ,KC_HASH,KC_DLR ,KC_PERC,                    KC_CIRC,KC_AMPR,KC_ASTR,KC_LPRN,KC_RPRN,KC_RBRC,
-    _______,XXXXXXX,XXXXXXX,XXXXXXX,KC_UNDS,KC_LCBR,_______,    _______,KC_RCBR,KC_PLUS,XXXXXXX,XXXXXXX,XXXXXXX,_______,
+    _______,XXXXXXX,XXXXXXX,KC_UNDS,KC_LCBR,XXXXXXX,_______,    _______,XXXXXXX,KC_RCBR,KC_PLUS,XXXXXXX,XXXXXXX,_______,
                     _______,_______,_______,_______,_______,    _______,_______,_______,_______,_______
 ),
 
