@@ -7,5 +7,9 @@
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_WPM_ENABLE
 
+// BOOTMAGIC configuration for right side
+#define BOOTMAGIC_ROW_RIGHT 5
+#define BOOTMAGIC_COLUMN_RIGHT 0
+
 // RPG lighting modes
 #define ENABLE_RGB_MATRIX_STARLIGHT_SMOOTH
