@@ -5,3 +5,6 @@
 
 // RPG lighting modes
 #define ENABLE_RGB_MATRIX_STARLIGHT_SMOOTH
+#define EE_HANDS
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_WPM_ENABLE

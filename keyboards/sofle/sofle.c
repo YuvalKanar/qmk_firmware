@@ -115,7 +115,8 @@ bool oled_task_kb(void) {
     if (!oled_task_user()) {
         return false;
     }
-    if (is_keyboard_master()) {
+    // if (is_keyboard_master()) {
+    if (eeconfig_read_handedness()) {
         print_status_narrow();
 #ifdef LUNA_ENABLE
         render_luna(0, 13);
