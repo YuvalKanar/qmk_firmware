@@ -2,14 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "quantum.h"
 
-#ifdef LUNA_ENABLE
-#include "luna.h"
-#endif
-
-#ifdef OCEAN_DREAM_ENABLE
-#include "ocean_dream.h"
-#endif
-
 #ifdef SWAP_HANDS_ENABLE
 
 __attribute__ ((weak))
@@ -57,13 +49,9 @@ const uint8_t PROGMEM encoder_hand_swap_config[NUM_ENCODERS] = {1, 0};
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
-    if (is_keyboard_master()) {
-        return OLED_ROTATION_270;
-    }
     return OLED_ROTATION_270;
 }
 
-#ifndef OCEAN_DREAM_ENABLE
 static void render_logo(void) {
     static const char PROGMEM qmk_logo[] = {
         0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,0x90,0x91,0x92,0x93,0x94,
@@ -72,26 +60,26 @@ static void render_logo(void) {
     };
     oled_write_P(qmk_logo, false);
 }
-#endif
 
 void print_status_narrow(void) {
-    oled_write_P(PSTR("\n\n "), false);
+    oled_write_P(PSTR("\n\n"), false);
     switch (get_highest_layer(layer_state)) {
         case 0:
-            oled_write_P(PSTR("Qwrt"), false);
+            oled_write_ln_P(PSTR("Qwrt"), false);
             break;
         case 1:
-            oled_write_P(PSTR("Game"), false);
+            oled_write_ln_P(PSTR("Clmk"), false);
             break;
         default:
             oled_write_P(PSTR("Mod\n"), false);
             break;
     }
     oled_write_P(PSTR("\n\n"), false);
+    oled_write_ln_P(PSTR("LAYER"), false);
     switch (get_highest_layer(layer_state)) {
         case 0:
         case 1:
-            oled_write_P(PSTR(" Base"), false);
+            oled_write_P(PSTR("Base\n"), false);
             break;
         case 2:
             oled_write_P(PSTR("Lower"), false);
@@ -99,34 +87,25 @@ void print_status_narrow(void) {
         case 3:
             oled_write_P(PSTR("Raise"), false);
             break;
+        case 4:
+            oled_write_P(PSTR("Adjust"), false);
+            break;
         default:
             oled_write_ln_P(PSTR("Undef"), false);
     }
     oled_write_P(PSTR("\n\n"), false);
-
-    static char wpm_str[4];
-
-    sprintf(wpm_str, "%03d", get_current_wpm());
-    oled_write_P(PSTR(" WPM\n "), false);
-    oled_write(wpm_str, false);
+    led_t led_usb_state = host_keyboard_led_state();
+    oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
 }
 
 bool oled_task_kb(void) {
     if (!oled_task_user()) {
         return false;
     }
-    // if (is_keyboard_master()) {
-    if (eeconfig_read_handedness()) {
+    if (is_keyboard_master()) {
         print_status_narrow();
-#ifdef LUNA_ENABLE
-        render_luna(0, 13);
-#endif
     } else {
-#ifdef OCEAN_DREAM_ENABLE
-        render_stars();
-#else
         render_logo();
-#endif
     }
     return true;
 }
@@ -154,32 +133,3 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     return true;
 }
 #endif
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case KC_LCTL:
-        case KC_RCTL:
-#ifdef OCEAN_DREAM_ENABLE
-            is_calm = (record->event.pressed) ? true : false;
-#endif
-#ifdef LUNA_ENABLE
-            if (record->event.pressed) {
-                isSneaking = true;
-            } else {
-                isSneaking = false;
-            }
-#endif
-            break;
-        case KC_SPC:
-#ifdef LUNA_ENABLE
-            if (record->event.pressed) {
-                isJumping  = true;
-                showedJump = false;
-            } else {
-                isJumping = false;
-            }
-#endif
-            break;
-    }
-    return true;
-}

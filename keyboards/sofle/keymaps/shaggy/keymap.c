@@ -17,6 +17,14 @@
 
 #include QMK_KEYBOARD_H
 
+#if defined(LUNA_ENABLE)
+#include "luna.h"
+#endif
+
+#if defined(OCEAN_DREAM_ENABLE)
+#include "ocean_dream.h"
+#endif
+
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [0] = { ENCODER_CCW_CW(KC_MPRV, KC_MNXT),           ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
@@ -117,3 +125,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     _______,_______,_______,TG(1)  ,_______,    _______,_______,_______,_______,_______
 ),
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_LCTL:
+        case KC_RCTL:
+#ifdef OCEAN_DREAM_ENABLE
+            is_calm = (record->event.pressed) ? true : false;
+#endif
+#ifdef LUNA_ENABLE
+            if (record->event.pressed) {
+                isSneaking = true;
+            } else {
+                isSneaking = false;
+            }
+#endif
+            break;
+        case KC_SPC:
+#ifdef LUNA_ENABLE
+            if (record->event.pressed) {
+                isJumping  = true;
+                showedJump = false;
+            } else {
+                isJumping = false;
+            }
+#endif
+            break;
+    }
+    return true;
+}

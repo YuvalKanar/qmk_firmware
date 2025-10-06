@@ -40,7 +40,7 @@
  * Moon Parameters
  */
 #define MOON_LINE 4    // the line you want the moon to appear at
-#define MOON_COLUMN 4  // the column you want the moon to appear at
+#define MOON_COLUMN 0  // the column you want the moon to appear at
 //#define STATIC_MOON  // uncomment this to make the moon a static image, no animation
 #ifndef STATIC_MOON
 #    define ANIMATE_MOON_EVERY_N_FRAMES 100  // animate the moon every n frames
