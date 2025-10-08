@@ -94,9 +94,9 @@ static void draw_moon(void) {
     moon_animation_counter = increment_counter(moon_animation_counter, ANIMATE_MOON_EVERY_N_FRAMES);
     if (moon_animation_counter == 0) {
         moon_animation_frame = increment_counter(moon_animation_frame, 14);
-        oled_set_cursor(MOON_COLUMN, MOON_LINE);
-        oled_write_raw_P(moon_animation[moon_animation_frame], 8);
     }
+    oled_set_cursor(MOON_COLUMN, MOON_LINE);
+    oled_write_raw_P(moon_animation[moon_animation_frame], 8);
 #    endif
 }
 #endif  // endregion
