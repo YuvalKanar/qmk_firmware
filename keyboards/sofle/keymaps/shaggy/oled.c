@@ -14,20 +14,17 @@ static void print_status_narrow(void) {
     switch (get_highest_layer(layer_state)) {
         case 0:
             oled_write_P(PSTR("Qwrt"), false);
-            oled_write_P(PSTR("\n\n"), false);
             break;
         case 1:
-            oled_write_P(PSTR("GameA"), false);
-            oled_write_P(PSTR("\n"), false);
+            oled_write_P(PSTR("GA"), false);
             break;
         case 2:
-            oled_write_P(PSTR("GameB"), false);
-            oled_write_P(PSTR("\n"), false);
+            oled_write_P(PSTR("GB"), false);
         default:
             oled_write_P(PSTR("Mod\n"), false);
-            oled_write_P(PSTR("\n\n"), false);
             break;
     }
+    oled_write_P(PSTR("\n\n"), false);
     switch (get_highest_layer(layer_state)) {
         case 0:
         case 1:

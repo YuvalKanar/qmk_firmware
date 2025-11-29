@@ -48,7 +48,7 @@ enum TAP_DANCES {
 };
 
 tap_dance_action_t tap_dance_actions[] = {
-  [TD_B_R] = ACTION_TAP_DANCE_DOUBLE(MO(B), MO(R)),
+  [TD_B_R] = ACTION_TAP_DANCE_DOUBLE(TO(B), TO(R)),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
