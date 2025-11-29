@@ -25,25 +25,35 @@
 #include "ocean_dream.h"
 #endif
 
+enum LAYERS {
+  B,  // Base
+  GA, // Game A Preset
+  GB, // Game B Preset
+  L,  // Lower
+  R   // Raise
+};
+
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [0] = { ENCODER_CCW_CW(KC_MPRV, KC_MNXT),           ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [1] = { ENCODER_CCW_CW(_______, _______),           ENCODER_CCW_CW(_______, _______) },
-    [2] = { ENCODER_CCW_CW(RM_VALD, RM_VALU),           ENCODER_CCW_CW(RM_PREV, RM_NEXT) },
-    [3] = { ENCODER_CCW_CW(RM_HUED, RM_HUEU),           ENCODER_CCW_CW(RM_SATD, RM_SATU) }
+    [B]  = { ENCODER_CCW_CW(KC_MPRV, KC_MNXT),           ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [GA] = { ENCODER_CCW_CW(_______, _______),           ENCODER_CCW_CW(_______, _______) },
+    [GB] = { ENCODER_CCW_CW(_______, _______),           ENCODER_CCW_CW(_______, _______) },
+    [L]  = { ENCODER_CCW_CW(RM_VALD, RM_VALU),           ENCODER_CCW_CW(RM_PREV, RM_NEXT) },
+    [R]  = { ENCODER_CCW_CW(RM_HUED, RM_HUEU),           ENCODER_CCW_CW(RM_SATD, RM_SATU) }
 };
 #endif
 
-enum LAYERS {
-  B, // Base
-  G, // Game
-  L, // Lower
-  R  // Raise
+enum TAP_DANCES {
+  TD_B_R,
+};
+
+tap_dance_action_t tap_dance_actions[] = {
+  [TD_B_R] = ACTION_TAP_DANCE_DOUBLE(MO(B), MO(R)),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
- * QWERTY
+ * Base QWERTY
  * ,-----------------------------------------.                               ,-----------------------------------------.
  * |  `   |   1  |   2  |   3  |   4  |   5  |                               |   6  |   7  |   8  |   9  |   0  | Bspc |
  * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
@@ -66,7 +76,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 /*
- * GAME
+ * Game A
+ * Shifts one column of keys to the right on the left side of the keyboard for a comfortable WASD layout
  * ,-----------------------------------------.                               ,-----------------------------------------.
  * |   5  |  `   |   1  |   2  |   3  |   4  |                               | ____ | ____ | ____ | ____ | ____ | ____ |
  * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
@@ -80,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *               `-----------------------------------'               '-----------------------------------'
  */
 
-[G] = LAYOUT(
+[GA] = LAYOUT(
     KC_5   ,KC_GRV ,KC_1   ,KC_2   ,KC_3   ,KC_4   ,                    _______,_______,_______,_______,_______,_______,
     KC_T   ,KC_TAB ,KC_Q   ,KC_W   ,KC_E   ,KC_R   ,                    _______,_______,_______,_______,_______,_______,
     KC_G   ,KC_ESC ,KC_A   ,KC_S   ,KC_D   ,KC_F   ,                    _______,_______,_______,_______,_______,_______,
@@ -88,7 +99,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     _______,_______,_______,_______,KC_SPC ,    KC_ENT ,_______,_______,_______,_______
 ),
 
-/* LOWER
+/*
+ * Game B
+ * ,-----------------------------------------.                               ,-----------------------------------------.
+ * | ____ | ____ | ____ | ____ | ____ | ____ |                               | ____ | ____ | ____ | ____ | ____ | ____ |
+ * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
+ * | ____ | ____ | ____ | ____ | ____ | ____ |                               | PgUp | Home |  Up  | End | ____ | ____ |
+ * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
+ * | ____ | ____ | ____ | ____ | ____ | ____ |-------.               ,-------| PgDn | Left | Down | Right| ____ | ____ |
+ * |------+------+------+------+------+------| ____  |               | ____  |------+------+------+------+------+------|
+ * | ____ | ____ | ____ | ____ | ____ | ____ |-------|               |-------| ____ | ____ | ____ | ____ | ____ | ____ |
+ * `-------------+------+------+------+------|       |               |       |------+------+------+------+-------------'
+ *               | ____ | ____ | ____ | ____ | ____  |               | ____  |TD(BR)| ____ | ____ | ____ |
+ *               `-----------------------------------'               '-----------------------------------'
+ */
+
+[GB] = LAYOUT(
+    _______,_______,_______,_______,_______,_______,                    _______,_______,_______,_______,_______,_______,
+    _______,_______,_______,_______,_______,_______,                    KC_PGUP,KC_HOME,KC_UP  ,KC_END ,_______,_______,
+    _______,_______,_______,_______,_______,_______,                    KC_PGDN,KC_LEFT,KC_DOWN,KC_RGHT,_______,_______,
+    _______,_______,_______,_______,_______,_______,_______,    _______,_______,_______,_______,_______,_______,_______,
+                    _______,_______,_______,_______,_______,    _______,TD(TD_B_R),_______,_______,_______
+),
+
+/*
+ * LOWER
  * ,-----------------------------------------.                               ,-----------------------------------------.
  * |      |      |      |      |      |      |                               |      |      |      |      |   -  |   =  |
  * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
@@ -110,15 +145,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     _______,_______,_______,_______,_______,    _______,_______,_______,_______,_______
 ),
 
-/* RAISE
+/*
+ * RAISE
  * ,----------------------------------------.                                ,-----------------------------------------.
  * |      |  F1  |  F2  |  F3  |  F4  |  F5  |                               |  F6  |  F7  |  F8  |  F9  | F10  | Del  |
  * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
  * | ____ | Ins  | Pscr | Menu |Pause |      |                               | PgUp | Home |  Up  | End  | F11  | F12  |
  * |------+------+------+------+------+------|                               |------+------+------+------+------+------|
- * | ____ | LCrl | LWin | LAlt |      |TG(G) |-------.               ,-------| PgDn | Left | Down | Rigth|      |      |
+ * | ____ | LCrl | LWin | LAlt |      |TG(GA)|-------.               ,-------| PgDn | Left | Down | Rigth|      |      |
  * |------+------+------+------+------+------|       |               |       |------+------+------+------+------+------|
- * | ____ |      |      |      |      |      |-------|               |-------|      |      |      |      |      | ____ |
+ * | ____ |      |      |      |      |TG(GB)|-------|               |-------|      |      |      |      |      | ____ |
  * `-------------+------+------+------+------|       |               |       |------+------+------+------+-------------'
  *               | ____ | ____ | ____ | ____ | ____  |               | ____  | ____ | ____ | ____ | ____ |
  *               `-----------------------------------'               '-----------------------------------'
@@ -127,8 +163,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [R] = LAYOUT(
     XXXXXXX,KC_F1  ,KC_F2  ,KC_F3  ,KC_F4  ,KC_F5  ,                    KC_F6  ,KC_F7  ,KC_F8  ,KC_F9  ,KC_F10 ,KC_DEL ,
     _______,KC_INS ,KC_PSCR,KC_APP ,KC_PAUS,XXXXXXX,                    KC_PGUP,KC_HOME,KC_UP  ,KC_END ,KC_F11 ,KC_F12 ,
-    _______,KC_LCTL,KC_LGUI,KC_LALT,XXXXXXX,TG(G)  ,                    KC_PGDN,KC_LEFT,KC_DOWN,KC_RGHT,XXXXXXX,XXXXXXX,
-    _______,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,    XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,_______,
+    _______,KC_LCTL,KC_LGUI,KC_LALT,XXXXXXX,TG(GA) ,                    KC_PGDN,KC_LEFT,KC_DOWN,KC_RGHT,XXXXXXX,XXXXXXX,
+    _______,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,TG(GB) ,XXXXXXX,    XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,_______,
                     _______,_______,_______,_______,_______,    _______,_______,_______,_______,_______
 ),
 };
