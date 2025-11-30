@@ -1,5 +1,6 @@
 #include "quantum.h"
 #include "split_util.h"
+#include "keymap.h"
 
 #ifdef LUNA_ENABLE
 #include "luna.h"
@@ -12,14 +13,15 @@
 static void print_status_narrow(void) {
     oled_write_P(PSTR("\n\n "), false);
     switch (get_highest_layer(layer_state)) {
-        case 0:
+        case B:
+        case GW:
             oled_write_P(PSTR("Qwrt"), false);
             break;
-        case 1:
-            oled_write_P(PSTR("GamA"), false);
+        case GA:
+            oled_write_P(PSTR("WASD"), false);
             break;
-        case 2:
-            oled_write_P(PSTR("GamB"), false);
+        case GB:
+            oled_write_P(PSTR("ARRW"), false);
             break;
         default:
             oled_write_P(PSTR("Mod\n"), false);
@@ -27,22 +29,24 @@ static void print_status_narrow(void) {
     }
     oled_write_P(PSTR("\n\n"), false);
     switch (get_highest_layer(layer_state)) {
-        case 0:
-        case 1:
-        case 2:
+        case B:
             oled_write_P(PSTR(" Base"), false);
             break;
-        case 3:
+        case GA:
+        case GB:
+        case GW:
+            oled_write_P(PSTR(" Game"), false);
+            break;
+        case L:
             oled_write_P(PSTR("Lower"), false);
             break;
-        case 4:
+        case R:
             oled_write_P(PSTR("Raise"), false);
             break;
         default:
             oled_write_ln_P(PSTR("Undef"), false);
     }
     oled_write_P(PSTR("\n\n"), false);
-
     static char wpm_str[4];
 
     sprintf(wpm_str, "%03d", get_current_wpm());
