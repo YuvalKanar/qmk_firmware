@@ -16,10 +16,10 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("Qwrt"), false);
             break;
         case 1:
-            oled_write_P(PSTR("GA"), false);
+            oled_write_P(PSTR("GamA"), false);
             break;
         case 2:
-            oled_write_P(PSTR("GB"), false);
+            oled_write_P(PSTR("GamB"), false);
         default:
             oled_write_P(PSTR("Mod\n"), false);
             break;
