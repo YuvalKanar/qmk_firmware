@@ -20,6 +20,7 @@ static void print_status_narrow(void) {
             break;
         case 2:
             oled_write_P(PSTR("GamB"), false);
+            break;
         default:
             oled_write_P(PSTR("Mod\n"), false);
             break;
