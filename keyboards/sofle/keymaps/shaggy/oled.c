@@ -15,7 +15,11 @@ static void print_status_narrow(void) {
     switch (get_highest_layer(layer_state)) {
         case B:
         case GW:
-            oled_write_P(PSTR("Qwrt"), false);
+            if(keymap_config.swap_lalt_lgui){
+              oled_write_ln_P(PSTR("Mac"), false);
+            } else {
+              oled_write_ln_P(PSTR("Win"), false);
+            }
             break;
         case GA:
             oled_write_P(PSTR("WASD"), false);
