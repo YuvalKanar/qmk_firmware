@@ -15,6 +15,3 @@
 
 // RPG lighting modes
 #define ENABLE_RGB_MATRIX_STARLIGHT_SMOOTH
-
-// Encoder settings
-#define ENCODER_RESOLUTION 1
