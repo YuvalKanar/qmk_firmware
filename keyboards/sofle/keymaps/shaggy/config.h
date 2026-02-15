@@ -6,6 +6,8 @@
 #define EE_HANDS
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_WPM_ENABLE
+#define SPLIT_MODS_ENABLE
+#define SPLIT_OLED_ENABLE
 
 // BOOTMAGIC configuration for right side
 #define BOOTMAGIC_ROW_RIGHT 5
@@ -13,3 +15,6 @@
 
 // RPG lighting modes
 #define ENABLE_RGB_MATRIX_STARLIGHT_SMOOTH
+
+// Encoder settings
+#define ENCODER_RESOLUTION 1
